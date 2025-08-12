@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {gsap} from "gsap";
 import './App.css'
+import {useEffect, useRef} from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+
+gsap.registerPlugin(ScrollTrigger);
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const boxRef = useRef(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        gsap.fromTo(
+            boxRef.current,
+            { x: -200, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 1.5,
+                scrollTrigger: {
+                    trigger: boxRef.current,
+                    start: "top 80%",
+                    end: "top 40%",
+                    scrub: true,
+                },
+            }
+        );
+    }, []);
+
+    return (
+        <div
+            style={{
+                height: "200vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <div
+                ref={boxRef}
+                style={{
+                    width: "100px",
+                    height: "100px",
+                    backgroundColor: "green",
+                    margin: "50px auto",
+                }}
+            />
+        </div>
+    );
 }
 
 export default App
